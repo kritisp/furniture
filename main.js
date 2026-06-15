@@ -197,3 +197,66 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.head.appendChild(styleSheet);
 });
+
+/* =====================
+   MEGA MENU PREVIEW
+===================== */
+
+const megaLinks = document.querySelectorAll('.mega-column a');
+
+const previewImage =
+document.getElementById('megaPreviewImage');
+
+const previewTitle =
+document.getElementById('megaPreviewTitle');
+
+const previewText =
+document.getElementById('megaPreviewText');
+
+const previewData = {
+
+  "Executive Chairs": {
+    img: "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1",
+    text: "Premium executive seating solutions."
+  },
+
+  "Conference Chairs": {
+    img: "https://images.unsplash.com/photo-1497366811353-6870744d04b2",
+    text: "Comfortable meeting room seating."
+  },
+
+  "Task Chairs": {
+    img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36",
+    text: "Ergonomic chairs for daily work."
+  },
+
+  "Lounge Chairs": {
+    img: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c",
+    text: "Relaxed seating for collaborative spaces."
+  },
+
+  "Sofas": {
+    img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc",
+    text: "Stylish sofas for modern interiors."
+  }
+};
+
+megaLinks.forEach(link => {
+
+  link.addEventListener('mouseenter', () => {
+
+    const item = link.textContent.trim();
+
+    if(!previewData[item]) return;
+
+    previewImage.src =
+      previewData[item].img;
+
+    previewTitle.textContent =
+      item;
+
+    previewText.textContent =
+      previewData[item].text;
+  });
+
+});
