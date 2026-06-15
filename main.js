@@ -54,16 +54,160 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealElements.forEach(el => revealObserver.observe(el));
 
-  // --- 4. Interactive Moodboard Configurator ---
+  // --- 4. Interactive Moodboard Configurator (3D Canvas) ---
+  const container = document.getElementById('canvas-3d');
+  let scene, camera, renderer, controls;
+  let chairGroup;
+  let upholsteryMaterial, frameMaterial;
+  let isUserInteracting = false;
+
+  if (container) {
+    const width = container.clientWidth || 450;
+    const height = container.clientHeight || 450;
+
+    // Scene
+    scene = new THREE.Scene();
+
+    // Camera
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 1.4, 4.5);
+
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // Controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enablePan = false;
+    controls.minPolarAngle = 0.1;
+    controls.maxPolarAngle = Math.PI / 2 + 0.05;
+    controls.minDistance = 3.0;
+    controls.maxDistance = 6.0;
+
+    controls.addEventListener('start', () => {
+      isUserInteracting = true;
+    });
+    controls.addEventListener('end', () => {
+      isUserInteracting = false;
+    });
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    scene.add(ambientLight);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 1.5);
+    spotLight.position.set(8, 12, 8);
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+    spotLight.shadow.bias = -0.001;
+    scene.add(spotLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    dirLight.position.set(-8, 8, -8);
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0xfff1e0, 0.6, 15);
+    pointLight.position.set(0, 4, -4);
+    scene.add(pointLight);
+
+    // Group for the chair
+    chairGroup = new THREE.Group();
+    chairGroup.position.set(0, -0.8, 0); // Center the chair around the pivot
+    scene.add(chairGroup);
+
+    // Materials mapping to colors
+    upholsteryMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#b0705a'), // Default: Boucle Terra Cotta
+      roughness: 0.8,
+      metalness: 0.0,
+    });
+
+    frameMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#1a1a1a'), // Default: Charcoal Black
+      roughness: 0.35,
+      metalness: 0.2,
+    });
+
+    // Build Chair Model (from ModelChair.jsx)
+    // 1. Seat
+    const seatGeo = new THREE.BoxGeometry(1.6, 0.2, 1.6);
+    const seatMesh = new THREE.Mesh(seatGeo, upholsteryMaterial);
+    seatMesh.position.set(0, 1.2, 0);
+    seatMesh.castShadow = true;
+    seatMesh.receiveShadow = true;
+    chairGroup.add(seatMesh);
+
+    // 2. Backrest
+    const backGeo = new THREE.BoxGeometry(1.6, 1.4, 0.2);
+    const backMesh = new THREE.Mesh(backGeo, upholsteryMaterial);
+    backMesh.position.set(0, 2.0, -0.7);
+    backMesh.castShadow = true;
+    backMesh.receiveShadow = true;
+    chairGroup.add(backMesh);
+
+    // 3. Legs
+    const legGeo = new THREE.CylinderGeometry(0.08, 0.04, 1.2, 16);
+    const legPositions = [
+      [-0.7, 0.6, 0.7],
+      [0.7, 0.6, 0.7],
+      [-0.7, 0.6, -0.7],
+      [0.7, 0.6, -0.7]
+    ];
+
+    legPositions.forEach(pos => {
+      const legMesh = new THREE.Mesh(legGeo, frameMaterial);
+      legMesh.position.set(pos[0], pos[1], pos[2]);
+      legMesh.castShadow = true;
+      chairGroup.add(legMesh);
+    });
+
+    // Ground Shadow Plane
+    const floorGeo = new THREE.PlaneGeometry(15, 15);
+    const floorMat = new THREE.ShadowMaterial({ opacity: 0.15 });
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -0.8;
+    floor.receiveShadow = true;
+    scene.add(floor);
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (!isUserInteracting && chairGroup) {
+        chairGroup.rotation.y += 0.003;
+      }
+
+      if (controls) {
+        controls.update();
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newWidth, newHeight);
+    });
+  }
+
   const upholsteryDots = document.querySelectorAll('#upholstery-dots .color-dot');
   const upholsterySelectionText = document.getElementById('upholstery-name');
-  const upholsteryOverlay = document.getElementById('upholstery-overlay');
 
   const frameDots = document.querySelectorAll('#frame-dots .color-dot');
   const frameSelectionText = document.getElementById('frame-name');
-  const frameOverlay = document.getElementById('frame-overlay');
-
-  const productMainImage = document.getElementById('product-main-image');
 
   // Handle Upholstery configuration click
   upholsteryDots.forEach(dot => {
@@ -77,18 +221,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const colorVal = dot.getAttribute('data-color');
       upholsterySelectionText.textContent = name;
 
-      // Update upholstery visual overlay with blend mode color
-      if (upholsteryOverlay) {
-        upholsteryOverlay.style.backgroundColor = colorVal;
-        upholsteryOverlay.style.opacity = '0.35';
+      // Update upholstery 3D material color and properties
+      if (upholsteryMaterial) {
+        upholsteryMaterial.color.set(colorVal);
+        if (name.includes('Leather')) {
+          upholsteryMaterial.roughness = 0.4;
+          upholsteryMaterial.metalness = 0.1;
+        } else if (name.includes('Velvet') || name.includes('Boucle')) {
+          upholsteryMaterial.roughness = 0.8;
+          upholsteryMaterial.metalness = 0.0;
+        } else {
+          upholsteryMaterial.roughness = 0.9;
+          upholsteryMaterial.metalness = 0.0;
+        }
       }
 
       // Add a scale pop interaction
-      if (productMainImage) {
-        productMainImage.style.transform = 'scale(1.05)';
+      if (chairGroup) {
+        chairGroup.scale.set(1.06, 1.06, 1.06);
         setTimeout(() => {
-          productMainImage.style.transform = '';
-        }, 300);
+          if (chairGroup) chairGroup.scale.set(1, 1, 1);
+        }, 200);
       }
     });
   });
@@ -105,18 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const colorVal = dot.getAttribute('data-color');
       frameSelectionText.textContent = name;
 
-      // Update frame visual overlay
-      if (frameOverlay) {
-        frameOverlay.style.backgroundColor = colorVal;
-        frameOverlay.style.opacity = '0.15';
+      // Update frame 3D material color
+      if (frameMaterial) {
+        frameMaterial.color.set(colorVal);
       }
 
       // Add scale pop interaction
-      if (productMainImage) {
-        productMainImage.style.transform = 'scale(1.05)';
+      if (chairGroup) {
+        chairGroup.scale.set(1.06, 1.06, 1.06);
         setTimeout(() => {
-          productMainImage.style.transform = '';
-        }, 300);
+          if (chairGroup) chairGroup.scale.set(1, 1, 1);
+        }, 200);
       }
     });
   });
