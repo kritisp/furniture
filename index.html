@@ -161,8 +161,10 @@
   <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
 
   <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-bg"></div>
+  <div class="scroll-slideshow-container">
+    <div class="scroll-slideshow-wrapper">
+      <section id="hero" class="hero-section scroll-slide">
+        <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content container">
       <div class="reveal reveal-up" style="transition-duration: 800ms;">
@@ -233,7 +235,7 @@
   </section>
 
   <!-- Offerings Section -->
-  <section class="offerings-section">
+  <section id="offerings" class="offerings-section scroll-slide">
     <div class="container relative">
       <div class="offerings-header reveal reveal-up">
         <p class="offerings-subheading">Curated furniture for diverse spaces.</p>
@@ -361,7 +363,7 @@
 
   <!-- Statement Section -->
   <!-- About Section -->
-  <section id="about" class="about-section">
+  <section id="about" class="about-section scroll-slide">
     <div class="container relative z-10">
       <div class="reveal reveal-up flex-col items-center justify-center text-center">
         <h2 class="about-heading">
@@ -379,7 +381,7 @@
   </section>
 
   <!-- Heritage Collection Section -->
-  <section id="spaces" class="heritage-section bg-subtle overflow-hidden py-16">
+  <section id="spaces" class="heritage-section bg-subtle overflow-hidden py-16 scroll-slide">
     <div class="container">
       <div class="heritage-layout">
 
@@ -392,14 +394,16 @@
             </div>
           </div>
           
-          <div class="reveal reveal-up heritage-text-block" style="transition-delay: 200ms;">
-            <div class="vertical-line"></div>
-            <div class="heritage-content">
-              <h2 class="heritage-title">HERITAGE COLLECTION</h2>
-              <p class="heritage-desc">
-                Heritage Collection is a forward-looking collection, an artistic and cultural heritage, otherwise lost, still to be enhanced. Sheetal Furnitures traces its history back to the origins of modernity, starting from the works of great architectural masters of the 20th century.
-              </p>
-              <button class="btn-outline">SEE COLLECTION</button>
+          <div class="reveal reveal-up" style="transition-delay: 200ms; width: 100%;">
+            <div class="heritage-text-block">
+              <div class="vertical-line"></div>
+              <div class="heritage-content">
+                <h2 class="heritage-title">HERITAGE COLLECTION</h2>
+                <p class="heritage-desc">
+                  Heritage Collection is a forward-looking collection, an artistic and cultural heritage, otherwise lost, still to be enhanced. Sheetal Furnitures traces its history back to the origins of modernity, starting from the works of great architectural masters of the 20th century.
+                </p>
+                <button class="btn-outline">SEE COLLECTION</button>
+              </div>
             </div>
           </div>
         </div>
@@ -417,7 +421,7 @@
   </section>
 
   <!-- Divisions Section -->
-  <section class="divisions-section overflow-hidden py-16">
+  <section id="divisions" class="divisions-section overflow-hidden py-16 scroll-slide">
     <div class="container relative">
       
       <!-- Carousel Arrows (Visual Mockup) -->
@@ -469,7 +473,7 @@
   </section>
 
   <!-- Moodboard Feature Section -->
-  <section id="collabs" class="moodboard-section bg-white">
+  <section id="collabs" class="moodboard-section bg-white scroll-slide">
     <!-- Left Dark Column -->
     <div class="moodboard-left">
       <div class="reveal reveal-right">
@@ -600,7 +604,7 @@
   </section>
 
   <!-- Inclusion Feature Section -->
-  <section class="inclusion-section py-32 bg-subtle overflow-hidden">
+  <section id="inclusion" class="inclusion-section py-32 bg-subtle overflow-hidden scroll-slide">
     <div class="container">
       <div class="inclusion-layout">
 
@@ -637,7 +641,7 @@
   </section>
 
   <!-- Category Showcase Section -->
-  <section id="products" class="category-section py-24 bg-white">
+  <section id="products" class="category-section py-24 bg-white scroll-slide">
     <div class="container">
       <div class="category-layout">
 
@@ -737,7 +741,7 @@
   </section>
 
   <!-- Footer Section -->
-  <footer id="contact" class="footer">
+  <footer id="contact" class="footer scroll-slide">
     <div class="container relative z-10">
 
       <!-- Top Section -->
@@ -798,6 +802,8 @@
 
     </div>
   </footer>
+    </div>
+  </div>
 
   <!-- Custom Cursor Elements -->
   <div class="custom-cursor" id="customCursor">

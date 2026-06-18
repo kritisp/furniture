@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 1. Sticky Header ---
   const header = document.getElementById('main-header');
   window.addEventListener('scroll', () => {
+    if (document.body.classList.contains('slideshow-active')) return;
     if (window.scrollY > 50) {
       header.classList.add('scrolled');
     } else {
@@ -775,6 +776,274 @@ document.addEventListener('DOMContentLoaded', () => {
  
     startHeroAutoplay();
   }
+
+  // --- 11. Scroll Slideshow System ---
+  const slideshowWrapper = document.querySelector('.scroll-slideshow-wrapper');
+  const slides = document.querySelectorAll('.scroll-slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+  let isAnimating = false;
+  const cooldownTime = 1200; // ms, slightly longer than transition duration
+  let dotsNav = null;
+
+  function updateDots(index) {
+    if (!dotsNav) return;
+    const dots = dotsNav.querySelectorAll('.scroll-dot-btn');
+    dots.forEach((dot, idx) => {
+      if (idx === index) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+
+    // Theme dots based on slide index (dark themes on 0 and 8, light on others)
+    if (index === 0 || index === 8) {
+      dotsNav.classList.add('theme-dark');
+    } else {
+      dotsNav.classList.remove('theme-dark');
+    }
+  }
+
+  function updateHeaderTheme(index) {
+    const header = document.getElementById('main-header');
+    if (!header) return;
+    if (index > 0) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+
+  function updateRevealAnimations(index) {
+    slides.forEach((slide, idx) => {
+      const reveals = slide.querySelectorAll('.reveal');
+      if (idx === index) {
+        reveals.forEach(el => {
+          el.classList.add('in-view');
+        });
+      } else {
+        reveals.forEach(el => {
+          el.classList.remove('in-view');
+        });
+      }
+    });
+  }
+
+  function enforceSlideshowLayouts() {
+    const isActive = document.body.classList.contains('slideshow-active');
+    
+    // Target Moodboard Elements
+    const moodboardSection = document.querySelector('.moodboard-section');
+    const moodboardLeft = document.querySelector('.moodboard-left');
+    const moodboardRight = document.querySelector('.moodboard-right');
+    const moodboardContainer = document.querySelector('.moodboard-container');
+    const productWrapper = document.querySelector('.product-image-wrapper');
+    
+    if (moodboardSection && moodboardLeft && moodboardRight) {
+      if (isActive) {
+        // Enforce horizontal flex row layout for Moodboard
+        moodboardSection.style.setProperty('display', 'flex', 'important');
+        moodboardSection.style.setProperty('flex-direction', 'row', 'important');
+        moodboardSection.style.setProperty('padding-top', '0', 'important');
+        moodboardSection.style.setProperty('padding-bottom', '0', 'important');
+        moodboardSection.style.setProperty('height', '100vh', 'important');
+        
+        moodboardLeft.style.setProperty('height', '100vh', 'important');
+        moodboardLeft.style.setProperty('width', '33.333%', 'important');
+        moodboardLeft.style.setProperty('padding', '6rem 4rem', 'important');
+        moodboardLeft.style.setProperty('display', 'flex', 'important');
+        moodboardLeft.style.setProperty('flex-direction', 'column', 'important');
+        moodboardLeft.style.setProperty('justify-content', 'center', 'important');
+        
+        moodboardRight.style.setProperty('height', '100vh', 'important');
+        moodboardRight.style.setProperty('width', '66.666%', 'important');
+        moodboardRight.style.setProperty('padding-top', '0', 'important');
+        moodboardRight.style.setProperty('padding-bottom', '0', 'important');
+        moodboardRight.style.setProperty('display', 'flex', 'important');
+        moodboardRight.style.setProperty('align-items', 'center', 'important');
+        
+        if (moodboardContainer) {
+          moodboardContainer.style.setProperty('gap', '3.5rem', 'important');
+        }
+        if (productWrapper) {
+          productWrapper.style.setProperty('max-width', '450px', 'important');
+        }
+      } else {
+        // Reset styles for normal vertical scrolling layout
+        moodboardSection.style.removeProperty('display');
+        moodboardSection.style.removeProperty('flex-direction');
+        moodboardSection.style.removeProperty('padding-top');
+        moodboardSection.style.removeProperty('padding-bottom');
+        moodboardSection.style.removeProperty('height');
+        
+        moodboardLeft.style.removeProperty('height');
+        moodboardLeft.style.removeProperty('width');
+        moodboardLeft.style.removeProperty('padding');
+        moodboardLeft.style.removeProperty('display');
+        moodboardLeft.style.removeProperty('flex-direction');
+        moodboardLeft.style.removeProperty('justify-content');
+        
+        moodboardRight.style.removeProperty('height');
+        moodboardRight.style.removeProperty('width');
+        moodboardRight.style.removeProperty('padding-top');
+        moodboardRight.style.removeProperty('padding-bottom');
+        moodboardRight.style.removeProperty('display');
+        moodboardRight.style.removeProperty('align-items');
+        
+        if (moodboardContainer) {
+          moodboardContainer.style.removeProperty('gap');
+        }
+        if (productWrapper) {
+          productWrapper.style.removeProperty('max-width');
+        }
+      }
+    }
+  }
+
+  function goToSlide(index) {
+    if (index < 0 || index >= totalSlides || isAnimating) return;
+    isAnimating = true;
+    currentSlide = index;
+
+    if (slideshowWrapper) {
+      slideshowWrapper.style.transform = `translateY(-${currentSlide * 100}vh)`;
+    }
+
+    updateDots(currentSlide);
+    updateHeaderTheme(currentSlide);
+    updateRevealAnimations(currentSlide);
+    enforceSlideshowLayouts();
+
+    // Trigger three.js resize check if on moodboard slide (index 5)
+    if (currentSlide === 5) {
+      window.dispatchEvent(new Event('resize'));
+    }
+
+    setTimeout(() => {
+      isAnimating = false;
+    }, cooldownTime);
+  }
+
+  function createDotsNav() {
+    if (document.querySelector('.scroll-dots-nav')) return;
+
+    dotsNav = document.createElement('div');
+    dotsNav.className = 'scroll-dots-nav';
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'scroll-dot-btn';
+      if (i === 0) dot.className += ' active';
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      dot.addEventListener('click', () => {
+        goToSlide(i);
+      });
+      dotsNav.appendChild(dot);
+    }
+
+    document.body.appendChild(dotsNav);
+    updateDots(currentSlide);
+  }
+
+  function destroyDotsNav() {
+    const existingNav = document.querySelector('.scroll-dots-nav');
+    if (existingNav) {
+      existingNav.remove();
+      dotsNav = null;
+    }
+  }
+
+  function checkSlideshowActive() {
+    const shouldBeActive = window.innerWidth > 992 && window.innerHeight > 650;
+    const isActive = document.body.classList.contains('slideshow-active');
+
+    if (shouldBeActive && !isActive) {
+      document.body.classList.add('slideshow-active');
+      createDotsNav();
+      enforceSlideshowLayouts();
+      goToSlide(currentSlide);
+    } else if (!shouldBeActive && isActive) {
+      document.body.classList.remove('slideshow-active');
+      destroyDotsNav();
+      enforceSlideshowLayouts();
+      if (slideshowWrapper) {
+        slideshowWrapper.style.transform = 'none';
+      }
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+    }
+  }
+
+  // Event Listeners for scrolling
+  window.addEventListener('wheel', (e) => {
+    if (!document.body.classList.contains('slideshow-active') || isAnimating) return;
+    
+    e.preventDefault();
+
+    if (e.deltaY > 30) {
+      goToSlide(currentSlide + 1);
+    } else if (e.deltaY < -30) {
+      goToSlide(currentSlide - 1);
+    }
+  }, { passive: false });
+
+  // Keyboard controls
+  window.addEventListener('keydown', (e) => {
+    if (!document.body.classList.contains('slideshow-active') || isAnimating) return;
+    
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      goToSlide(currentSlide + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      goToSlide(currentSlide - 1);
+    }
+  });
+
+  // Touch controls (Swipe gestures)
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    if (!document.body.classList.contains('slideshow-active')) return;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    if (!document.body.classList.contains('slideshow-active') || isAnimating) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffY = touchStartY - touchEndY;
+
+    if (Math.abs(diffY) > 60) {
+      if (diffY > 0) {
+        goToSlide(currentSlide + 1);
+      } else {
+        goToSlide(currentSlide - 1);
+      }
+    }
+  }, { passive: true });
+
+  // Hijack anchor link clicks for slideshow
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      if (!document.body.classList.contains('slideshow-active')) return;
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        const slide = targetElement.closest('.scroll-slide');
+        if (slide) {
+          e.preventDefault();
+          const slidesArray = Array.from(slides);
+          const slideIndex = slidesArray.indexOf(slide);
+          if (slideIndex !== -1) {
+            goToSlide(slideIndex);
+          }
+        }
+      }
+    });
+  });
+
+  window.addEventListener('resize', checkSlideshowActive);
+  window.addEventListener('load', checkSlideshowActive);
+  checkSlideshowActive();
 });
 
 /* =====================
