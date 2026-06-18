@@ -169,16 +169,66 @@
         <h1 class="hero-title">Office</h1>
       </div>
     </div>
-    <!-- Slider dots mimicking the UI -->
-    <div class="hero-indicators">
-      <span class="dot active" data-slide="0"></span>
-      <span class="dot" data-slide="1"></span>
-      <span class="dot" data-slide="2"></span>
-      <span class="dot" data-slide="3"></span>
-      <span class="dot" data-slide="4"></span>
-      <span class="dot" data-slide="5"></span>
-      <span class="dot" data-slide="6"></span>
-      <span class="dot" data-slide="7"></span>
+    <!-- Horizontal Scrollable Category Card scroller -->
+    <div class="hero-scroller-container">
+      <div class="container">
+        <div class="hero-scroller-wrapper" id="heroScroller">
+          <div class="hero-scroller-card active" data-slide="0">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Office.webp" alt="Office" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Office</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="1">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Corporates.webp" alt="Corporates" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Corporates</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="2">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Cafe.webp" alt="Cafe" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Cafe</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="3">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Bars.webp" alt="Bars" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Bars</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="4">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Phone booths.webp" alt="Phone booths" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Phone booths</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="5">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Waiting Area.webp" alt="Waiting Area" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Waiting area</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="6">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Edu.webp" alt="Education" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Education</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="7">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Tables.webp" alt="Tables" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Tables</span>
+          </div>
+          <div class="hero-scroller-card" data-slide="8">
+            <div class="hero-scroller-img-wrapper">
+              <img src="images/Collab.webp" alt="Collab" class="hero-scroller-img">
+            </div>
+            <span class="hero-scroller-label">Collab</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -750,7 +800,9 @@
   </footer>
 
   <!-- Custom Cursor Elements -->
-  <div class="custom-cursor" id="customCursor"></div>
+  <div class="custom-cursor" id="customCursor">
+    <span class="cursor-text" id="customCursorText"></span>
+  </div>
   <div class="custom-cursor-dot" id="customCursorDot"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>

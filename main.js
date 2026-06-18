@@ -488,6 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 9. Custom Cursor navigation feature ---
   const customCursor = document.getElementById('customCursor');
   const customCursorDot = document.getElementById('customCursorDot');
+  const customCursorText = document.getElementById('customCursorText');
 
   if (customCursor && customCursorDot) {
     let targetX = 0;
@@ -495,6 +496,102 @@ document.addEventListener('DOMContentLoaded', () => {
     let cursorX = 0;
     let cursorY = 0;
     let isHidden = true;
+    let lastHoveredElement = null;
+
+    // Helper to calculate contrast color for swatches
+    function getContrastColor(hex) {
+      if (!hex) return '#ffffff';
+      const cleanHex = hex.replace('#', '');
+      const r = parseInt(cleanHex.substring(0, 2), 16);
+      const g = parseInt(cleanHex.substring(2, 4), 16);
+      const b = parseInt(cleanHex.substring(4, 6), 16);
+      const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+      return (yiq >= 170) ? '#162b3c' : '#ffffff';
+    }
+
+    // Centered state reset and updater
+    function updateCursorState(target) {
+      if (target === lastHoveredElement) return;
+      lastHoveredElement = target;
+
+      // 1. Reset all state classes & dynamic properties
+      customCursor.classList.remove('color-picker-hover', 'canvas-hover', 'image-hover', 'slider-hover', 'hover', 'has-text');
+      customCursorDot.classList.remove('hover');
+      if (customCursorText) customCursorText.textContent = '';
+      
+      customCursor.style.removeProperty('--hover-color');
+      customCursor.style.removeProperty('--hover-bg');
+      customCursor.style.removeProperty('--hover-glow');
+      customCursor.style.removeProperty('--hover-glow-subtle');
+      customCursor.style.removeProperty('--hover-color-text');
+
+      if (!target) return;
+
+      // 2. Adjust cursor theme based on section color
+      const inDarkSection = target.closest('.hero-section, .moodboard-left, .footer');
+      if (inDarkSection) {
+        customCursor.classList.add('theme-dark');
+        customCursor.classList.remove('theme-light');
+        customCursorDot.classList.add('theme-dark');
+        customCursorDot.classList.remove('theme-light');
+      } else {
+        customCursor.classList.add('theme-light');
+        customCursor.classList.remove('theme-dark');
+        customCursorDot.classList.add('theme-light');
+        customCursorDot.classList.remove('theme-dark');
+      }
+
+      // 3. Apply element-specific styling and labels
+      
+      // Color Dot Selection
+      const colorDot = target.closest('.color-dot');
+      if (colorDot) {
+        const hexColor = colorDot.getAttribute('data-color');
+        const colorName = colorDot.getAttribute('data-name') || 'COLOR';
+        
+        if (customCursorText) customCursorText.textContent = colorName.toUpperCase();
+        customCursor.classList.add('color-picker-hover', 'has-text');
+        
+        customCursor.style.setProperty('--hover-color', hexColor);
+        customCursor.style.setProperty('--hover-bg', `${hexColor}25`);
+        customCursor.style.setProperty('--hover-glow', `${hexColor}60`);
+        customCursor.style.setProperty('--hover-glow-subtle', `${hexColor}30`);
+        customCursor.style.setProperty('--hover-color-text', getContrastColor(hexColor));
+        return;
+      }
+
+      // 3D Model Configuration Canvas
+      const canvas3D = target.closest('#canvas-3d');
+      if (canvas3D) {
+        if (customCursorText) customCursorText.textContent = 'ROTATE';
+        customCursor.classList.add('canvas-hover', 'has-text');
+        return;
+      }
+
+      // Image Cards and Showcase Galleries
+      const imageCard = target.closest('.image-card, .showcase-img, .offering-img-wrapper, .overlay-chair');
+      if (imageCard) {
+        if (customCursorText) customCursorText.textContent = 'VIEW';
+        customCursor.classList.add('image-hover', 'has-text');
+        return;
+      }
+
+      // Slider/Carousel Viewports
+      const offeringsSlider = target.closest('#offerings-viewport');
+      if (offeringsSlider) {
+        if (customCursorText) customCursorText.textContent = 'DRAG';
+        customCursor.classList.add('slider-hover', 'has-text');
+        return;
+      }
+
+      // General interactive elements (links, buttons, controls)
+      const interactive = target.closest('a, button, input, select, textarea, .category-item, .slider-arrow, .tool-btn, [role="button"]');
+      if (interactive) {
+        customCursor.classList.add('hover');
+        customCursorDot.classList.add('hover');
+        return;
+      }
+    }
 
     // Only activate cursor tracking on devices that support hover
     if (window.matchMedia('(hover: hover)').matches) {
@@ -516,6 +613,9 @@ document.addEventListener('DOMContentLoaded', () => {
           customCursorDot.classList.remove('hidden');
           isHidden = false;
         }
+
+        // Dynamically update cursor styling based on hover targets
+        updateCursorState(e.target);
       });
 
       // Smooth custom cursor outer circle with lerp/inertia
@@ -536,6 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customCursor.classList.add('hidden');
         customCursorDot.classList.add('hidden');
         isHidden = true;
+        updateCursorState(null);
       });
 
       document.addEventListener('mouseenter', () => {
@@ -553,109 +654,104 @@ document.addEventListener('DOMContentLoaded', () => {
         customCursor.classList.remove('active');
       });
 
-      // Click on genuine links hides the cursor
-      const bindGenuineLinks = () => {
-        document.querySelectorAll('a').forEach(link => {
+      // Click on genuine links hides the cursor to avoid flashing on reload
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
           const href = link.getAttribute('href');
           if (href && !href.startsWith('#') && href !== '#') {
-            // Remove previous event listener just in case
-            link.removeEventListener('click', hideCursorOnClick);
-            link.addEventListener('click', hideCursorOnClick);
+            customCursor.classList.add('hidden');
+            customCursorDot.classList.add('hidden');
+            isHidden = true;
           }
-        });
-      };
-
-      function hideCursorOnClick() {
-        customCursor.classList.add('hidden');
-        customCursorDot.classList.add('hidden');
-        isHidden = true;
-      }
-
-      // Handle hover expansion on interactive elements
-      const bindHoverState = (elements) => {
-        elements.forEach(el => {
-          el.removeEventListener('mouseenter', addHoverClasses);
-          el.removeEventListener('mouseleave', removeHoverClasses);
-          el.addEventListener('mouseenter', addHoverClasses);
-          el.addEventListener('mouseleave', removeHoverClasses);
-        });
-      };
-
-      function addHoverClasses() {
-        customCursor.classList.add('hover');
-        customCursorDot.classList.add('hover');
-      }
-
-      function removeHoverClasses() {
-        customCursor.classList.remove('hover');
-        customCursorDot.classList.remove('hover');
-      }
-
-      // Initial Bindings
-      bindGenuineLinks();
-      const interactives = document.querySelectorAll('a, button, input, select, textarea, .category-item, .color-dot, .slider-arrow, .tool-btn, [role="button"]');
-      bindHoverState(interactives);
-
-      // Handle hover state updates for dynamically loaded or changed content
-      const observer = new MutationObserver(() => {
-        bindGenuineLinks();
-        const freshInteractives = document.querySelectorAll('a, button, input, select, textarea, .category-item, .color-dot, .slider-arrow, .tool-btn, [role="button"]');
-        bindHoverState(freshInteractives);
+        }
       });
-      observer.observe(document.body, { childList: true, subtree: true });
     }
   }
 
   // --- 10. Hero Infinite Carousel / Fade Slider ---
   const heroBg = document.querySelector('.hero-bg');
   const heroTitle = document.querySelector('.hero-title');
-  const dots = document.querySelectorAll('.hero-indicators .dot');
-
+  const cards = document.querySelectorAll('.hero-scroller-card');
+ 
   const slideData = [
-    { image: 'images/hero_1.png', title: 'Office' },
-    { image: 'images/hero_2.png', title: 'Corporates' },
-    { image: 'images/hero_3.png', title: 'Cafe' },
-    { image: 'https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=1920', title: 'Bars' },
-    { image: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&q=80&w=1920', title: 'Phone booths' },
-    { image: 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=1920', title: 'Waiting area' },
-    { image: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1920', title: 'Education' },
-    { image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80&w=1920', title: 'Tables' }
+    { image: 'images/Office.webp', title: 'Office' },
+    { image: 'images/Corporates.webp', title: 'Corporates' },
+    { image: 'images/Cafe.webp', title: 'Cafe' },
+    { image: 'images/Bars.webp', title: 'Bars' },
+    { image: 'images/Phone booths.webp', title: 'Phone booths' },
+    { image: 'images/Waiting Area.webp', title: 'Waiting area' },
+    { image: 'images/Edu.webp', title: 'Education' },
+    { image: 'images/Tables.webp', title: 'Tables' },
+    { image: 'images/Collab.webp', title: 'Collab' }
   ];
-
-  if (heroBg && heroTitle && dots.length > 0) {
+ 
+  if (heroBg && heroTitle && cards.length > 0) {
     let currentHeroIndex = 0;
     let isTransitioning = false;
     let heroInterval;
+    let heroScrollLock = false;
+    let heroScrollLockTimer;
 
+    const scroller = document.getElementById('heroScroller');
+
+    function lockHeroScroll() {
+      heroScrollLock = true;
+      if (heroScrollLockTimer) {
+        clearTimeout(heroScrollLockTimer);
+      }
+      heroScrollLockTimer = setTimeout(() => {
+        heroScrollLock = false;
+      }, 500);
+    }
+ 
     function showHeroSlide(index) {
       if (isTransitioning || index === currentHeroIndex) return;
       isTransitioning = true;
       currentHeroIndex = index;
-
-      // Update dots immediately
-      dots.forEach((dot, idx) => {
+ 
+      // Update cards immediately and scroll active one into center view
+      cards.forEach((card, idx) => {
         if (idx === index) {
-          dot.classList.add('active');
+          card.classList.add('active');
+          if (scroller && !heroScrollLock) {
+            const scrollerWidth = scroller.clientWidth;
+            const cardWidth = card.clientWidth;
+            const relativeLeft = card.offsetParent === scroller
+              ? card.offsetLeft
+              : card.offsetLeft - scroller.offsetLeft;
+            const targetLeft = relativeLeft - (scrollerWidth / 2) + (cardWidth / 2);
+            scroller.scrollTo({
+              left: targetLeft,
+              behavior: 'auto'
+            });
+          }
         } else {
-          dot.classList.remove('active');
+          card.classList.remove('active');
         }
       });
-
+ 
       // Fade out background and title
       heroBg.classList.add('fade-out');
       heroTitle.classList.add('fade-out');
-
+ 
       setTimeout(() => {
         // Change slide image and text
         heroBg.style.backgroundImage = `url('${slideData[index].image}')`;
         heroTitle.textContent = slideData[index].title;
-
+ 
         // Fade in
         heroBg.classList.remove('fade-out');
         heroTitle.classList.remove('fade-out');
         
         isTransitioning = false;
       }, 350); // Matches transition duration
+    }
+ 
+    if (scroller) {
+      ['wheel', 'touchstart', 'touchmove', 'pointerdown'].forEach(eventName => {
+        scroller.addEventListener(eventName, lockHeroScroll, { passive: true });
+      });
     }
 
     function startHeroAutoplay() {
@@ -664,19 +760,19 @@ document.addEventListener('DOMContentLoaded', () => {
         showHeroSlide(nextIndex);
       }, 3000);
     }
-
+ 
     function resetHeroAutoplay() {
       clearInterval(heroInterval);
       startHeroAutoplay();
     }
-
-    dots.forEach((dot, idx) => {
-      dot.addEventListener('click', () => {
+ 
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
         showHeroSlide(idx);
         resetHeroAutoplay();
       });
     });
-
+ 
     startHeroAutoplay();
   }
 });
