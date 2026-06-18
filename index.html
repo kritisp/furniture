@@ -310,56 +310,107 @@
   </section>
 
   <!-- Statement Section -->
-  <section id="about" class="statement-section">
-    <div class="container">
-      <div class="reveal reveal-up">
-        <p class="statement-text">
-          We take pride in being one of the largest provider of seating systems in India, and we are now recognized as
-          the top hybrid furniture manufacturers nationwide.
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container relative z-10">
+      <div class="reveal reveal-up flex-col items-center justify-center text-center">
+        <h2 class="about-heading">
+          about Sheetal<br>
+          <span class="underline-custom">Furnitures</span>
+        </h2>
+        <p class="about-text">
+          we blend design, functions, materials<br>
+          and colors to create<br>
+          <span class="underline-thin">harmonious living.</span>
         </p>
-        <div class="statement-link group">
-          <span class="link-label">Learn more</span>
-          <span class="link-arrow">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </span>
-        </div>
+        <button class="btn-black-pill mt-4">DISCOVER MORE</button>
       </div>
     </div>
   </section>
 
-  <!-- Curated Spaces Section -->
-  <section id="spaces" class="curated-spaces-section py-24 bg-white overflow-hidden">
+  <!-- Heritage Collection Section -->
+  <section id="spaces" class="heritage-section bg-subtle overflow-hidden py-16">
     <div class="container">
-      <div class="spaces-layout">
+      <div class="heritage-layout">
 
-        <!-- Left Image (Sofa) -->
-        <div class="spaces-left reveal reveal-right">
-          <div class="aspect-4-5 overflow-hidden group cursor-pointer image-card">
-            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1000"
-              alt="Living room sofa" class="zoom-img">
+        <!-- Left Column -->
+        <div class="heritage-left flex-col">
+          <div class="reveal reveal-right z-10 relative">
+            <div class="image-card rounded-none shadow-none group cursor-pointer w-full aspect-[4/3]">
+              <img src="images/hero_1.png"
+                alt="Heritage Collection Preview" class="zoom-img object-cover w-full h-full">
+            </div>
+          </div>
+          
+          <div class="reveal reveal-up heritage-text-block" style="transition-delay: 200ms;">
+            <div class="vertical-line"></div>
+            <div class="heritage-content">
+              <h2 class="heritage-title">HERITAGE COLLECTION</h2>
+              <p class="heritage-desc">
+                Heritage Collection is a forward-looking collection, an artistic and cultural heritage, otherwise lost, still to be enhanced. Sheetal Furnitures traces its history back to the origins of modernity, starting from the works of great architectural masters of the 20th century.
+              </p>
+              <button class="btn-outline">SEE COLLECTION</button>
+            </div>
           </div>
         </div>
 
-        <!-- Right Image & Text (Barstools) -->
-        <div class="spaces-right flex-col">
-          <div class="reveal reveal-left" style="transition-delay: 200ms;">
-            <div class="aspect-16-10 overflow-hidden group cursor-pointer image-card mb-16">
-              <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?auto=format&fit=crop&q=80&w=1200"
-                alt="Outdoor barstools" class="zoom-img">
+        <!-- Right Column -->
+        <div class="heritage-right reveal reveal-left">
+          <div class="image-card rounded-none shadow-none group cursor-pointer w-full h-full min-h-[600px]">
+            <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&q=80&w=1200"
+              alt="Lounge chair" class="zoom-img object-cover w-full h-full">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Divisions Section -->
+  <section class="divisions-section overflow-hidden py-16">
+    <div class="container relative">
+      
+      <!-- Carousel Arrows (Visual Mockup) -->
+      <button class="nav-arrow left-arrow" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="nav-arrow right-arrow" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="divisions-layout">
+        
+        <!-- Left Item -->
+        <div class="division-item reveal reveal-right">
+          <div class="division-img-wrapper image-card rounded-none shadow-none group cursor-pointer bg-light-gray">
+            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1000" alt="Sheetal Museum" class="zoom-img object-cover w-full h-full">
+            <div class="division-logo">S<sup>M</sup></div>
+          </div>
+          
+          <div class="heritage-text-block mt-8">
+            <div class="vertical-line" style="top: -2rem;"></div>
+            <div class="heritage-content">
+              <h2 class="division-title">SHEETAL<br>MUSEUM</h2>
             </div>
           </div>
+        </div>
 
-          <div class="reveal reveal-up max-w-md" style="transition-delay: 400ms;">
-            <h2 class="spaces-title">
-              Spaces Curated by Sheetal Furnituress
-            </h2>
-            <button class="btn-navy">
-              View All Spaces
-            </button>
+        <!-- Right Item -->
+        <div class="division-item reveal reveal-left" style="transition-delay: 200ms;">
+          <div class="division-img-wrapper image-card rounded-none shadow-none group cursor-pointer bg-light-gray">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000" alt="Contract Division" class="zoom-img object-cover w-full h-full">
+          </div>
+          
+          <div class="heritage-text-block mt-8">
+            <div class="vertical-line" style="top: -2rem;"></div>
+            <div class="heritage-content">
+              <h2 class="division-title">CONTRACT<br>DIVISION</h2>
+              <button class="btn-outline" style="margin-top: 1.5rem;">LEARN MORE</button>
+            </div>
           </div>
         </div>
 
