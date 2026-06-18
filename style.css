@@ -514,11 +514,11 @@ header.fixed-header.scrolled {
 }
 
 .about-section .container {
-  max-width: 800px;
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .about-heading {
@@ -589,6 +589,117 @@ header.fixed-header.scrolled {
   width: 100%;
   height: 1px;
   background-color: #000;
+}
+
+.statement-block {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: 12%;
+  text-align: left;
+  margin-bottom: 7rem;
+}
+
+.statement-text {
+  font-family: var(--font-primary);
+  font-size: 2.1rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--color-navy);
+  max-width: 100%;
+}
+
+.statement-link {
+  margin-top: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.statement-link .link-label {
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.statement-link .link-arrow {
+  display: flex;
+  align-items: center;
+  transition: transform var(--transition-fast);
+}
+
+.statement-link .link-arrow svg {
+  width: 14px;
+  height: 14px;
+}
+
+.statement-link:hover {
+  color: var(--color-navy);
+}
+
+.statement-link:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+.about-details-block {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.desktop-br {
+  display: inline;
+}
+
+@media (max-width: 1024px) {
+  .desktop-br {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .statement-block {
+    margin-left: auto;
+    margin-right: 6%;
+    max-width: 90%;
+    margin-bottom: 5.5rem;
+  }
+  .statement-text {
+    font-size: 2.1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 1024px) {
+  .statement-block {
+    margin-left: 0;
+    max-width: 100%;
+    margin-bottom: 4.5rem;
+  }
+  .statement-text {
+    font-size: 2.25rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 768px) {
+  .statement-block {
+    margin-bottom: 3.5rem;
+  }
+  .statement-text {
+    font-size: 1.875rem;
+    line-height: 1.35;
+  }
+  .statement-link {
+    margin-top: 1.5rem;
+  }
 }
 
 .btn-black-pill {
@@ -2182,4 +2293,12 @@ header.fixed-header .logo-right-box {
 
 header.fixed-header .logo-inner-bar {
   background-color: currentColor !important;
+}
+
+body.slideshow-active .statement-block {
+  margin-bottom: 3rem !important;
+}
+body.slideshow-active .about-section .container {
+  justify-content: center !important;
+  height: 100%;
 }
