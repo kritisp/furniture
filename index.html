@@ -165,8 +165,8 @@
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content container">
-      <div class="reveal reveal-up" style="transition-duration: 1200ms;">
-        <h1 class="hero-title">Collab</h1>
+      <div class="reveal reveal-up" style="transition-duration: 800ms;">
+        <h1 class="hero-title">Office</h1>
       </div>
     </div>
     <!-- Slider dots mimicking the UI -->
@@ -179,6 +179,133 @@
       <span class="dot" data-slide="5"></span>
       <span class="dot" data-slide="6"></span>
       <span class="dot" data-slide="7"></span>
+    </div>
+  </section>
+
+  <!-- Offerings Section -->
+  <section class="offerings-section">
+    <div class="container relative">
+      <div class="offerings-header reveal reveal-up">
+        <p class="offerings-subheading">Curated furniture for diverse spaces.</p>
+        <h2 class="offerings-title">Our <span class="font-bold">Offerings</span></h2>
+      </div>
+      
+      <div class="offerings-slider-container reveal reveal-up" style="transition-delay: 200ms;">
+        <button class="slider-arrow prev" aria-label="Previous Offerings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <div class="offerings-slider-viewport" id="offerings-viewport">
+          <div class="offerings-track" id="offerings-track">
+            <!-- Item 1 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/seating.png" alt="Seating">
+              </div>
+              <p class="offering-label">Seating</p>
+            </div>
+            <!-- Item 2 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/workstations.png" alt="Workstations">
+              </div>
+              <p class="offering-label">Workstations</p>
+            </div>
+            <!-- Item 3 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/tables.png" alt="Tables">
+              </div>
+              <p class="offering-label">Tables</p>
+            </div>
+            <!-- Item 4 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/panel_systems.png" alt="Panel Systems">
+              </div>
+              <p class="offering-label">Panel Systems</p>
+            </div>
+            <!-- Item 5 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/education.png" alt="Education">
+              </div>
+              <p class="offering-label">Education</p>
+            </div>
+            <!-- Item 6 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/storage.png" alt="Storage">
+              </div>
+              <p class="offering-label">Storage</p>
+            </div>
+            <!-- Item 7 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/ancillary.png" alt="Ancillary Products">
+              </div>
+              <p class="offering-label">Ancillary Products</p>
+            </div>
+            <!-- Item 8 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/sofas.png" alt="Sofas">
+              </div>
+              <p class="offering-label">Sofas</p>
+            </div>
+            <!-- Item 9 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/cafe_chairs.png" alt="Cafe Chairs">
+              </div>
+              <p class="offering-label">Cafe Chairs</p>
+            </div>
+            <!-- Item 10 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/ergonomic_desks.png" alt="Ergonomic Desks">
+              </div>
+              <p class="offering-label">Ergonomic Desks</p>
+            </div>
+            <!-- Item 11 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/focus_pods.png" alt="Focus Pods">
+              </div>
+              <p class="offering-label">Focus Pods</p>
+            </div>
+            <!-- Item 12 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/barstools.png" alt="Barstools">
+              </div>
+              <p class="offering-label">Barstools</p>
+            </div>
+            <!-- Item 13 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/conference_tables.png" alt="Conference Tables">
+              </div>
+              <p class="offering-label">Conference Tables</p>
+            </div>
+            <!-- Item 14 -->
+            <div class="offering-card">
+              <div class="offering-img-wrapper">
+                <img src="images/lounge_chairs.png" alt="Lounge Chairs">
+              </div>
+              <p class="offering-label">Lounge Chairs</p>
+            </div>
+          </div>
+        </div>
+        
+        <button class="slider-arrow next" aria-label="Next Offerings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -570,6 +697,10 @@
 
     </div>
   </footer>
+
+  <!-- Custom Cursor Elements -->
+  <div class="custom-cursor" id="customCursor"></div>
+  <div class="custom-cursor-dot" id="customCursorDot"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
