@@ -160,6 +160,18 @@ header.fixed-header.scrolled {
   gap: 0.75rem;
 }
 
+.site-logo {
+  height: 36px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.logo:hover .site-logo {
+  transform: scale(1.05);
+}
+
 .logo-icon {
   display: flex;
 }
