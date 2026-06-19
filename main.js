@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cards.length === 0) return;
       const firstCard = cards[0];
       cardWidth = firstCard.getBoundingClientRect().width;
-      
+
       track.style.transition = 'none';
       setTrackPosition();
       track.offsetHeight; // trigger reflow
@@ -519,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
       customCursor.classList.remove('color-picker-hover', 'canvas-hover', 'image-hover', 'slider-hover', 'hover', 'has-text');
       customCursorDot.classList.remove('hover');
       if (customCursorText) customCursorText.textContent = '';
-      
+
       customCursor.style.removeProperty('--hover-color');
       customCursor.style.removeProperty('--hover-bg');
       customCursor.style.removeProperty('--hover-glow');
@@ -543,16 +543,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // 3. Apply element-specific styling and labels
-      
+
       // Color Dot Selection
       const colorDot = target.closest('.color-dot');
       if (colorDot) {
         const hexColor = colorDot.getAttribute('data-color');
         const colorName = colorDot.getAttribute('data-name') || 'COLOR';
-        
+
         if (customCursorText) customCursorText.textContent = colorName.toUpperCase();
         customCursor.classList.add('color-picker-hover', 'has-text');
-        
+
         customCursor.style.setProperty('--hover-color', hexColor);
         customCursor.style.setProperty('--hover-bg', `${hexColor}25`);
         customCursor.style.setProperty('--hover-glow', `${hexColor}60`);
@@ -603,11 +603,11 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('mousemove', (e) => {
         targetX = e.clientX;
         targetY = e.clientY;
-        
+
         // Immediate position for inner dot
         customCursorDot.style.left = `${targetX}px`;
         customCursorDot.style.top = `${targetY}px`;
-        
+
         // Show cursor if hidden
         if (isHidden) {
           customCursor.classList.remove('hidden');
@@ -624,10 +624,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const ease = 0.16; // Lerp factor
         cursorX += (targetX - cursorX) * ease;
         cursorY += (targetY - cursorY) * ease;
-        
+
         customCursor.style.left = `${cursorX}px`;
         customCursor.style.top = `${cursorY}px`;
-        
+
         requestAnimationFrame(animateCursor);
       };
       animateCursor();
@@ -674,7 +674,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroBg = document.querySelector('.hero-bg');
   const heroTitle = document.querySelector('.hero-title');
   const cards = document.querySelectorAll('.hero-scroller-card');
- 
+
   const slideData = [
     { image: 'images/Office.webp', title: 'Office' },
     { image: 'images/Corporates.webp', title: 'Corporates' },
@@ -686,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { image: 'images/Tables.webp', title: 'Tables' },
     { image: 'images/Collab.webp', title: 'Collab' }
   ];
- 
+
   if (heroBg && heroTitle && cards.length > 0) {
     let currentHeroIndex = 0;
     let isTransitioning = false;
@@ -705,12 +705,12 @@ document.addEventListener('DOMContentLoaded', () => {
         heroScrollLock = false;
       }, 500);
     }
- 
+
     function showHeroSlide(index) {
       if (isTransitioning || index === currentHeroIndex) return;
       isTransitioning = true;
       currentHeroIndex = index;
- 
+
       // Update cards immediately and scroll active one into center view
       cards.forEach((card, idx) => {
         if (idx === index) {
@@ -731,24 +731,24 @@ document.addEventListener('DOMContentLoaded', () => {
           card.classList.remove('active');
         }
       });
- 
+
       // Fade out background and title
       heroBg.classList.add('fade-out');
       heroTitle.classList.add('fade-out');
- 
+
       setTimeout(() => {
         // Change slide image and text
         heroBg.style.backgroundImage = `url('${slideData[index].image}')`;
         heroTitle.textContent = slideData[index].title;
- 
+
         // Fade in
         heroBg.classList.remove('fade-out');
         heroTitle.classList.remove('fade-out');
-        
+
         isTransitioning = false;
       }, 350); // Matches transition duration
     }
- 
+
     if (scroller) {
       ['wheel', 'touchstart', 'touchmove', 'pointerdown'].forEach(eventName => {
         scroller.addEventListener(eventName, lockHeroScroll, { passive: true });
@@ -761,19 +761,19 @@ document.addEventListener('DOMContentLoaded', () => {
         showHeroSlide(nextIndex);
       }, 3000);
     }
- 
+
     function resetHeroAutoplay() {
       clearInterval(heroInterval);
       startHeroAutoplay();
     }
- 
+
     cards.forEach((card, idx) => {
       card.addEventListener('click', () => {
         showHeroSlide(idx);
         resetHeroAutoplay();
       });
     });
- 
+
     startHeroAutoplay();
   }
 
@@ -797,8 +797,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Theme dots based on slide index (dark themes on 0 and 9, light on others)
-    if (index === 0 || index === 9) {
+    // Theme dots based on slide index (dark themes on 0 and 8, light on others)
+    if (index === 0 || index === 8) {
       dotsNav.classList.add('theme-dark');
     } else {
       dotsNav.classList.remove('theme-dark');
@@ -832,14 +832,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function enforceSlideshowLayouts() {
     const isActive = document.body.classList.contains('slideshow-active');
-    
+
     // Target Moodboard Elements
     const moodboardSection = document.querySelector('.moodboard-section');
     const moodboardLeft = document.querySelector('.moodboard-left');
     const moodboardRight = document.querySelector('.moodboard-right');
     const moodboardContainer = document.querySelector('.moodboard-container');
     const productWrapper = document.querySelector('.product-image-wrapper');
-    
+
     if (moodboardSection && moodboardLeft && moodboardRight) {
       if (isActive) {
         // Enforce horizontal flex row layout for Moodboard
@@ -848,21 +848,21 @@ document.addEventListener('DOMContentLoaded', () => {
         moodboardSection.style.setProperty('padding-top', '0', 'important');
         moodboardSection.style.setProperty('padding-bottom', '0', 'important');
         moodboardSection.style.setProperty('height', '100vh', 'important');
-        
+
         moodboardLeft.style.setProperty('height', '100vh', 'important');
         moodboardLeft.style.setProperty('width', '33.333%', 'important');
         moodboardLeft.style.setProperty('padding', '6rem 4rem', 'important');
         moodboardLeft.style.setProperty('display', 'flex', 'important');
         moodboardLeft.style.setProperty('flex-direction', 'column', 'important');
         moodboardLeft.style.setProperty('justify-content', 'center', 'important');
-        
+
         moodboardRight.style.setProperty('height', '100vh', 'important');
         moodboardRight.style.setProperty('width', '66.666%', 'important');
         moodboardRight.style.setProperty('padding-top', '0', 'important');
         moodboardRight.style.setProperty('padding-bottom', '0', 'important');
         moodboardRight.style.setProperty('display', 'flex', 'important');
         moodboardRight.style.setProperty('align-items', 'center', 'important');
-        
+
         if (moodboardContainer) {
           moodboardContainer.style.setProperty('gap', '3.5rem', 'important');
         }
@@ -876,21 +876,21 @@ document.addEventListener('DOMContentLoaded', () => {
         moodboardSection.style.removeProperty('padding-top');
         moodboardSection.style.removeProperty('padding-bottom');
         moodboardSection.style.removeProperty('height');
-        
+
         moodboardLeft.style.removeProperty('height');
         moodboardLeft.style.removeProperty('width');
         moodboardLeft.style.removeProperty('padding');
         moodboardLeft.style.removeProperty('display');
         moodboardLeft.style.removeProperty('flex-direction');
         moodboardLeft.style.removeProperty('justify-content');
-        
+
         moodboardRight.style.removeProperty('height');
         moodboardRight.style.removeProperty('width');
         moodboardRight.style.removeProperty('padding-top');
         moodboardRight.style.removeProperty('padding-bottom');
         moodboardRight.style.removeProperty('display');
         moodboardRight.style.removeProperty('align-items');
-        
+
         if (moodboardContainer) {
           moodboardContainer.style.removeProperty('gap');
         }
@@ -915,8 +915,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRevealAnimations(currentSlide);
     enforceSlideshowLayouts();
 
-    // Trigger three.js resize check if on moodboard slide (index 6)
-    if (currentSlide === 6) {
+    // Trigger three.js resize check if on moodboard slide (index 5)
+    if (currentSlide === 5) {
       window.dispatchEvent(new Event('resize'));
     }
 
@@ -977,7 +977,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event Listeners for scrolling
   window.addEventListener('wheel', (e) => {
     if (!document.body.classList.contains('slideshow-active') || isAnimating) return;
-    
+
     e.preventDefault();
 
     if (e.deltaY > 30) {
@@ -990,7 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Keyboard controls
   window.addEventListener('keydown', (e) => {
     if (!document.body.classList.contains('slideshow-active') || isAnimating) return;
-    
+
     if (e.key === 'ArrowDown' || e.key === 'PageDown') {
       goToSlide(currentSlide + 1);
     } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
@@ -1053,13 +1053,13 @@ document.addEventListener('DOMContentLoaded', () => {
 const megaLinks = document.querySelectorAll('.mega-column a');
 
 const previewImage =
-document.getElementById('megaPreviewImage');
+  document.getElementById('megaPreviewImage');
 
 const previewTitle =
-document.getElementById('megaPreviewTitle');
+  document.getElementById('megaPreviewTitle');
 
 const previewText =
-document.getElementById('megaPreviewText');
+  document.getElementById('megaPreviewText');
 
 const previewData = {
 
@@ -1095,7 +1095,7 @@ megaLinks.forEach(link => {
 
     const item = link.textContent.trim();
 
-    if(!previewData[item]) return;
+    if (!previewData[item]) return;
 
     previewImage.src =
       previewData[item].img;
