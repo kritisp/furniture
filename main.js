@@ -797,8 +797,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Theme dots based on slide index (dark themes on 0 and 8, light on others)
-    if (index === 0 || index === 8) {
+    // Theme dots based on slide index (dark themes on 0 and 9, light on others)
+    if (index === 0 || index === 9) {
       dotsNav.classList.add('theme-dark');
     } else {
       dotsNav.classList.remove('theme-dark');
@@ -915,8 +915,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateRevealAnimations(currentSlide);
     enforceSlideshowLayouts();
 
-    // Trigger three.js resize check if on moodboard slide (index 5)
-    if (currentSlide === 5) {
+    // Trigger three.js resize check if on moodboard slide (index 6)
+    if (currentSlide === 6) {
       window.dispatchEvent(new Event('resize'));
     }
 
